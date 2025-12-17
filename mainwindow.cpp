@@ -318,6 +318,55 @@ cv::Mat MainWindow::get_mat_with_custom_config(bool use_ori_image){
 
 }
 
+cv::Mat MainWindow::get_mat_with_custom_bottom_config(bool use_ori_image){
+    std::vector<cv::Mat> source_channel;
+
+    if(ui->RGBBtn->isChecked()){
+        source_channel = m_BGR_channels;
+    }
+    if(ui->HSVBtn->isChecked()){
+        source_channel = m_HSV_channels;
+    }
+
+    if(use_ori_image){
+        if(ui->RGBBtn->isChecked()){
+            cv::split(m_ori_image,source_channel);
+        }
+        if(ui->HSVBtn->isChecked()){
+            cv::Mat hsv_img;
+            cv::cvtColor(m_ori_image,hsv_img,cv::COLOR_BGR2HSV);
+            cv::split(hsv_img,source_channel);
+        }
+
+    }
+    std::vector<cv::Mat> show_channels;
+    for (int i = 0; i < source_channel.size(); ++i) {
+        cv::Mat c = source_channel[i].clone();
+        switch (i) {
+        case 0:
+            //B
+            c= ((float)ui->firstSlider->value()/100.0f)*c + ((float)ui->secondSlider->value()/100.0f)*c + ((float)ui->thirdSlider->value()/100.0f)*c;
+            break;
+        case 1:
+            //G
+            c=((float)ui->firstSlider_2->value()/100.0f)*c + ((float)ui->secondSlider_2->value()/100.0f)*c + ((float)ui->thirdSlider_2->value()/100.0f)*c;
+            break;
+        case 2:
+            //R
+            c=((float)ui->firstSlider_3->value()/100.0f)*c + ((float)ui->secondSlider_3->value()/100.0f)*c + ((float)ui->thirdSlider_3->value()/100.0f)*c;
+            break;
+        default:
+            break;
+        }
+        show_channels.push_back(c);
+    }
+    cv::Mat show_img;
+    cv::merge(show_channels,show_img);
+    if(ui->HSVBtn->isChecked()){
+        cv::cvtColor(show_img,show_img,cv::COLOR_HSV2RGB);
+    }
+    return show_img;
+}
 // 非颜色叠加色值变动
 void MainWindow::on_top_value_vhanged(int val){
     float num = val/100.0f;
@@ -409,39 +458,7 @@ void MainWindow::on_bottom_value_vhanged(int val){
 
     if(m_ori_image.empty()) return;
 
-    std::vector<cv::Mat> source_channel;
-    if(ui->RGBBtn->isChecked()){
-        source_channel = m_BGR_channels;
-    }
-    if(ui->HSVBtn->isChecked()){
-        source_channel = m_HSV_channels;
-    }
-    std::vector<cv::Mat> show_channels;
-    for (int i = 0; i < source_channel.size(); ++i) {
-        cv::Mat c = source_channel[i].clone();
-        switch (i) {
-        case 0:
-            //B
-            c= ((float)ui->firstSlider->value()/100.0f)*c + ((float)ui->secondSlider->value()/100.0f)*c + ((float)ui->thirdSlider->value()/100.0f)*c;
-            break;
-        case 1:
-            //G
-            c=((float)ui->firstSlider_2->value()/100.0f)*c + ((float)ui->secondSlider_2->value()/100.0f)*c + ((float)ui->thirdSlider_2->value()/100.0f)*c;
-            break;
-        case 2:
-            //R
-            c=((float)ui->firstSlider_3->value()/100.0f)*c + ((float)ui->secondSlider_3->value()/100.0f)*c + ((float)ui->thirdSlider_3->value()/100.0f)*c;
-            break;
-        default:
-            break;
-        }
-        show_channels.push_back(c);
-    }
-    cv::Mat show_img;
-    cv::merge(show_channels,show_img);
-    if(ui->HSVBtn->isChecked()){
-        cv::cvtColor(show_img,show_img,cv::COLOR_HSV2RGB);
-    }
+    cv::Mat show_img = get_mat_with_custom_bottom_config(false);
     QImage img = Mat2QImage(show_img);
     ui->show_image->setPixmap(QPixmap::fromImage(img));
 }
@@ -478,11 +495,6 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     }
 
 
-
-
-    if(ui->FastHandleBtn->isChecked()){
-
-    }
 
 
 }
@@ -533,7 +545,7 @@ void MainWindow::on_ImgReset_clicked()
 {
     if(!m_ori_image.empty()){
         if(save_channel){
-            auto show_img = get_mat_with_custom_config(true);
+            auto show_img = ui->ChannelMergeBtn->isChecked() ? get_mat_with_custom_bottom_config(true) : get_mat_with_custom_config(true);
             m_handle_image = show_img.clone();
             qDebug() << m_handle_image.cols;
         }else{
@@ -786,19 +798,32 @@ MainWindow::~MainWindow()
 void MainWindow::on_ImgReset_custom_clicked()
 {
     if(!m_ori_image.empty()){
-        reset_show_image();
-        //初始化自定义展示图片
-        // m_custom_image = m_show_image.clone();
-        //初始化相关通道
-        custom_reset_channel_info();
-        //根据设定值展示图象
-        ui->ChannelMergeBtn->isChecked() ? on_bottom_value_vhanged(100) : on_top_value_vhanged(100);
+        if(ui->ChannelMergeBtn->isChecked()){
+            ui->firstSlider->setValue(0);
+            ui->firstSlider_2->setValue(0);
+            ui->firstSlider_3->setValue(0);
+            ui->secondSlider->setValue(0);
+            ui->secondSlider_2->setValue(0);
+            ui->secondSlider_3->setValue(0);
+            ui->thirdSlider->setValue(0);
+            ui->thirdSlider_2->setValue(0);
+            ui->thirdSlider_3->setValue(0);
+        }else{
+            reset_show_image();
+            //初始化自定义展示图片
+            // m_custom_image = m_show_image.clone();
+            //初始化相关通道
+            custom_reset_channel_info();
+            //根据设定值展示图象
+            ui->ChannelMergeBtn->isChecked() ? on_bottom_value_vhanged(100) : on_top_value_vhanged(100);
 
-        // QImage img = Mat2QImage(m_show_image);
-        // ui->show_image->setPixmap(QPixmap::fromImage(img));
-        foreach (auto group, slider_groups) {
-            init_sliders_control(group,true,false);
+            // QImage img = Mat2QImage(m_show_image);
+            // ui->show_image->setPixmap(QPixmap::fromImage(img));
+            foreach (auto group, slider_groups) {
+                init_sliders_control(group,true,false);
+            }
         }
+
     }
 }
 

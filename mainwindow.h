@@ -22,6 +22,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+
 protected slots:
 
     void resizeEvent(QResizeEvent *event) override;
@@ -97,6 +98,7 @@ private:
     void custom_reset_channel_info();
     void handle_template(std::function<void ()> func);
     void reset_show_image();
+    cv::Mat get_mat_with_custom_bottom_config(bool use_ori_image);
     cv::Mat get_mat_with_custom_config(bool use_ori_image);
 };
 #endif // MAINWINDOW_H
