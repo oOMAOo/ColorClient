@@ -43,7 +43,7 @@ target_link_libraries(${PROJECT_NAME}
 # if(CMAKE_BUILD_TYPE STREQUAL "Debug")
 #     target_link_libraries(${PROJECT_NAME} PRIVATE opencv_world4120d)
 # elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
-    target_link_libraries(${PROJECT_NAME} PRIVATE opencv_world480 opencv_img_hash480)
+target_link_libraries(${PROJECT_NAME} PRIVATE opencv_world480 opencv_img_hash480)
 # endif()
 file(GLOB DEP_BIN_FILES
   "${CMAKE_CURRENT_SOURCE_DIR}/dep/bin/*.dll"

@@ -1,2 +1,5 @@
 build
 build/*
+.qtcreator
+.qtcreator/*
+dep

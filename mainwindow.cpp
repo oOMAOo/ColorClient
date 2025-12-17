@@ -101,7 +101,6 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     ui->thirdSlider_3->setProperty("bindLabelIdx",9);
 
 
-
     QButtonGroup* check_btns = new QButtonGroup(this);
     check_btns->addButton(ui->CustomConfigBtn,0);
     check_btns->addButton(ui->FastHandleBtn,1);
@@ -565,10 +564,11 @@ void MainWindow::handle_template(std::function<void(void)> func){
 }
 
 
-// 打开通道叠加
-void MainWindow::on_ChannelMergeBtn_checkStateChanged(const Qt::CheckState &arg1)
-{
 
+
+void MainWindow::on_ChannelMergeBtn_stateChanged(int arg1)
+{
+    qDebug() << "on_ChannelMergeBtn_checkStateChanged" << arg1;
     switch (arg1) {
     case Qt::CheckState::Checked:
         ui->top->setDisabled(true);
@@ -582,7 +582,9 @@ void MainWindow::on_ChannelMergeBtn_checkStateChanged(const Qt::CheckState &arg1
         break;
     }
     on_checked_radio_botton();
+
 }
+
 
 
 //线条加粗

@@ -27,7 +27,6 @@ protected slots:
     void resizeEvent(QResizeEvent *event) override;
 private slots:
     void on_checked_radio_botton();
-    void on_ChannelMergeBtn_checkStateChanged(const Qt::CheckState &arg1);
 
     void on_top_value_vhanged(int val);
     void on_bottom_value_vhanged(int val);
@@ -69,6 +68,8 @@ private slots:
     void on_erodeBtn_clicked();
 
     void on_ImgSharpen_clicked();
+
+    void on_ChannelMergeBtn_stateChanged(int arg1);
 
 private:
     Ui::MainWindow *ui;
