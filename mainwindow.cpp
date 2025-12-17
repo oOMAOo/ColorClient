@@ -365,6 +365,9 @@ cv::Mat MainWindow::get_mat_with_custom_bottom_config(bool use_ori_image){
     if(ui->HSVBtn->isChecked()){
         cv::cvtColor(show_img,show_img,cv::COLOR_HSV2RGB);
     }
+    if(ui->RGBBtn->isChecked()){
+        cv::cvtColor(show_img,show_img,cv::COLOR_BGR2RGB);
+    }
     return show_img;
 }
 // 非颜色叠加色值变动
