@@ -11,12 +11,51 @@
 2. 通道叠加未开启时，使用不同颜色空间调整的图片会互相影响，如果只想对单个颜色空间进行调整，请先"重置"后再重新调整
 3. 通道叠加开启后显示的图片为9个按钮影响的结果 例：RGB <img width="1092" height="279" alt="image" src="https://github.com/user-attachments/assets/275fce26-21c2-4299-8f7f-e18ef5328b4a" />
 4. "重置"操作不会重置所有按钮状态
-5. ⭐叠加状态：每个通道由原来的三个通道所影响 如图<img width="1197" height="936" alt="image" src="https://github.com/user-attachments/assets/d47a6a19-7a06-4d38-9849-9aab48bfccb2" />
-
-表示处理后的 
-R_ = 0.2R + 0.65G - 0.1B 
-G_ = 0.25R + 0.35G + 0.2B
-B_ = 0.5G + 0.2G
+5. ⭐叠加状态：每个通道由原来的三个通道所影响 如图<img width="1197" height="936" alt="image" src="https://github.com/user-attachments/assets/d47a6a19-7a06-4d38-9849-9aab48bfccb2" />  
+表示处理后的  
+R_ = 0.2R + 0.65G - 0.1B  
+G_ = 0.25R + 0.35G + 0.2B  
+B_ = 0.5G + 0.2G  
 ## 风格化
 1. 按钮均可多次点击，每次点击都是基于当前状态循环叠加
 2. 风格化"重置"的对象图会受到"自定义"配置的影响，如果想使用原图进行风格化操作，请先重置自定义项中的配置
+
+# Windows编译
+  visual studio 2022  环境: MSVC 14.44.35207
+## 1. Clone Demo
+```bash
+git clone https://github.com/oOMAOo/ColorClient.git
+cd ColorClient && cp CMakeLists_msvc.txt CMakeLists.txt
+```
+## 2. 解压依赖dep
+解压dep文件夹中的压缩包到"当前文件夹"，目录结构如下：    
+dep   
+&emsp;&emsp;*opencv    
+&emsp;&emsp;&emsp;&emsp;**include    
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;...    
+&emsp;&emsp;&emsp;&emsp;**lib    
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;...    
+&emsp;&emsp;&emsp;&emsp;**bin    
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;...    
+&emsp;&emsp;*qt    
+&emsp;&emsp;&emsp;&emsp;**include    
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;...    
+&emsp;&emsp;&emsp;&emsp;**lib    
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;...    
+&emsp;&emsp;&emsp;&emsp;**bin    
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;...   
+&emsp;&emsp;&emsp;&emsp;**others    
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;...
+## 3. 编译
+```bash
+mkdir build && cd build
+cmake ..
+cmake --build . --config Release
+cmake --install . --config Release
+```
+## 4. exe运行
+```bash
+cd Release
+.\color_client.exe
+```
+    

@@ -1,12 +1,10 @@
 #include "mainwindow.h"
-#pragma execution_character_set("utf-8")
 #include <QApplication>
-#include <QTextCodec>
+#include <QStyleFactory>
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    // QTextCodec::setCodecForLocale(QTextCodec::codecForName("utf-8"));
-
+    QApplication::setStyle(QStyleFactory::create("WindowsVista"));
     MainWindow w;
     w.show();
     return a.exec();
