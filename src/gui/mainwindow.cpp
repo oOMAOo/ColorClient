@@ -137,7 +137,7 @@ void MainWindow::check_handle_model(int id){
 
 void MainWindow::reset_show_image(){
     //计算缩放因子
-    float scale = std::min((float)ui->show_image->width()/(float)m_ori_image.cols,(float)ui->show_image->height()/(float)m_ori_image.rows);
+    float scale = std::min((float)(ui->show_image->width())/(float)(m_ori_image.cols),(float)(ui->show_image->height())/(float)(m_ori_image.rows));
     cv::resize(m_ori_image,m_show_image,cv::Size(0,0),scale,scale,scale >0 ? cv::INTER_CUBIC : cv::INTER_AREA);
     QImage img = Mat2QImage(m_show_image);
     //展示 图片
@@ -232,15 +232,15 @@ cv::Mat MainWindow::get_mat_with_custom_config(bool use_ori_image){
         switch (i) {
         case 0:
             //B
-            c*=(1+(float)ui->BSlider->value()/100.0f);
+            c*=(1.0f+(float)(ui->BSlider->value())/100.0f);
             break;
         case 1:
             //G
-            c*=(1+(float)ui->GSlider->value()/100.0f);
+            c*=(1.0f+(float)(ui->GSlider->value())/100.0f);
             break;
         case 2:
             //R
-            c*=(1+(float)ui->RSlider->value()/100.0f);
+            c*=(1.0f+(float)(ui->RSlider->value())/100.0f);
             break;
         default:
             break;
@@ -259,15 +259,15 @@ cv::Mat MainWindow::get_mat_with_custom_config(bool use_ori_image){
         switch (i) {
         case 0:
             //H
-            c*=(1+(float)ui->HSlider->value()/100.0f);
+            c*=(1+(float)(ui->HSlider->value())/100.0f);
             break;
         case 1:
             //S
-            c*=(1+(float)ui->SSlider->value()/100.0f);
+            c*=(1+(float)(ui->SSlider->value())/100.0f);
             break;
         case 2:
             //V
-            c*=(1+(float)ui->VSlider->value()/100.0f);
+            c*=(1+(float)(ui->VSlider->value())/100.0f);
             break;
         default:
             break;
@@ -287,15 +287,15 @@ cv::Mat MainWindow::get_mat_with_custom_config(bool use_ori_image){
         switch (i) {
         case 0:
             //H
-            c*=(1+(float)ui->YSlider->value()/100.0f);
+            c*=(1.0f+((float)(ui->YSlider->value())/100.0f));
             break;
         case 1:
             //S
-            c*=(1+(float)ui->USlider->value()/100.0f);
+            c*=(1.0f+((float)(ui->USlider->value())/100.0f));
             break;
         case 2:
             //V
-            c*=(1+(float)ui->V_2Slider->value()/100.0f);
+            c*=(1.0f+((float)(ui->V_2Slider->value())/100.0f));
             break;
         default:
             break;
@@ -336,15 +336,15 @@ cv::Mat MainWindow::get_mat_with_custom_bottom_config(bool use_ori_image){
         switch (i) {
         case 0:
             //B
-            c= ((float)ui->firstSlider->value()/100.0f)*c + ((float)ui->secondSlider->value()/100.0f)*c + ((float)ui->thirdSlider->value()/100.0f)*c;
+            c= ((float)(ui->firstSlider->value())/100.0f)*c + ((float)(ui->secondSlider->value())/100.0f)*c + ((float)(ui->thirdSlider->value())/100.0f)*c;
             break;
         case 1:
             //G
-            c=((float)ui->firstSlider_2->value()/100.0f)*c + ((float)ui->secondSlider_2->value()/100.0f)*c + ((float)ui->thirdSlider_2->value()/100.0f)*c;
+            c=((float)(ui->firstSlider_2->value())/100.0f)*c + ((float)(ui->secondSlider_2->value())/100.0f)*c + ((float)(ui->thirdSlider_2->value())/100.0f)*c;
             break;
         case 2:
             //R
-            c=((float)ui->firstSlider_3->value()/100.0f)*c + ((float)ui->secondSlider_3->value()/100.0f)*c + ((float)ui->thirdSlider_3->value()/100.0f)*c;
+            c=((float)(ui->firstSlider_3->value())/100.0f)*c + ((float)(ui->secondSlider_3->value())/100.0f)*c + ((float)(ui->thirdSlider_3->value())/100.0f)*c;
             break;
         default:
             break;
@@ -478,7 +478,7 @@ void MainWindow::resizeEvent(QResizeEvent *event)
         //风格化操作图:m_handle_image;
         if(ui->FastHandleBtn->isChecked()){
             //调整尺寸 不重置
-            float scale = std::min((float)ui->show_image->width()/(float)m_handle_image.cols,(float)ui->show_frame->height()/(float)m_handle_image.rows);
+            float scale = std::min((float)(ui->show_image->width())/(float)(m_handle_image.cols),(float)(ui->show_frame->height())/(float)(m_handle_image.rows));
             cv::resize(m_handle_image,m_handle_show_image,cv::Size(0,0),scale,scale,scale >0 ? cv::INTER_CUBIC : cv::INTER_AREA);
             QImage img = Mat2QImage(m_handle_show_image);
             ui->show_image->setPixmap(QPixmap::fromImage(img));
@@ -536,7 +536,7 @@ void MainWindow::on_ImgReset_clicked()
         }else{
             m_handle_image = m_ori_image.clone();
         }
-        float scale = std::min((float)ui->show_image->width()/(float)m_handle_image.cols,(float)ui->show_image->height()/(float)m_handle_image.rows);
+        float scale = std::min((float)(ui->show_image->width())/(float)(m_handle_image.cols),(float)(ui->show_image->height())/(float)(m_handle_image.rows));
         cv::resize(m_handle_image,m_handle_show_image,cv::Size(0,0),scale,scale,scale >0 ? cv::INTER_CUBIC : cv::INTER_AREA);
         QImage img = Mat2QImage(m_handle_show_image);
         ui->show_image->setPixmap(QPixmap::fromImage(img));
@@ -552,7 +552,7 @@ void MainWindow::handle_template(std::function<void(void)> func){
     func();
 
     //操作完重新显示回窗体
-    float scale = std::min((float)ui->show_image->width()/(float)m_handle_image.cols,(float)ui->show_image->height()/(float)m_handle_image.rows);
+    float scale = std::min((float)(ui->show_image->width())/(float)(m_handle_image.cols),(float)(ui->show_image->height())/(float)(m_handle_image.rows));
     cv::resize(m_handle_image,m_handle_show_image,cv::Size(0,0),scale,scale,scale >0 ? cv::INTER_CUBIC : cv::INTER_AREA);
     QImage img = Mat2QImage(m_handle_show_image);
     ui->show_image->setPixmap(QPixmap::fromImage(img));
